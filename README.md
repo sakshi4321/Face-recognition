@@ -17,3 +17,5 @@ pip install xlrd
 pip install xlwt
 
 pip install xlutils
+
+Update the names in excel sheet
