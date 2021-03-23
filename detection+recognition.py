@@ -8,7 +8,8 @@ Original file is located at
 
 ### Import Libraries
 """
-
+import cv2
+from cv2 import dnn_superres
 
 import datetime
 import xlwt
@@ -168,9 +169,18 @@ confidence_t=0.99
 
 video =cv2.VideoCapture(0)
 present_candidates=[]
+sr = cv2.dnn_superres.DnnSuperResImpl_create()
+path = "LapSRN_x8.pb"
+sr.readModel(path)
+
+# Set the desired model and scale to get correct pre- and post-processing
+sr.setModel("lapsrn", 8)
+
+
 
 while True:
-    check,frame=video.read()
+    check,frame1=video.read()
+    frame=sr.upsample(frame1)
 
     faces=detector.detect_faces(frame)
     
@@ -228,9 +238,9 @@ present_candidates_1=[]
 img_counter=0
 while True:
     
-    check,frame=video1.read()
+    check,frame1=video1.read()
     
-    cv2.imshow("SS",frame)
+    cv2.imshow("SS",frame1)
     k=cv2.waitKey(1)
     
     if k%256 == 27:
@@ -238,7 +248,9 @@ while True:
         break
         
     elif k%256==32:
+        frame=sr.upsample(frame1)
         faces=detector.detect_faces(frame)
+        
         if faces !=[]:
             for person in faces:
                 bounding_box=person["box"]
