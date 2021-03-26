@@ -19,3 +19,7 @@ pip install xlwt
 pip install xlutils
 
 Update the names in excel sheet
+
+## For the different mtcnn model
+
+pip install facenet-pytorch
